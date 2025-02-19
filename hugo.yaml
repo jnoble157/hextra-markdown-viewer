@@ -1,0 +1,51 @@
+baseURL: "http://localhost"
+languageCode: "en-us"
+title: "Josh Noble"
+theme: hextra
+
+# Enable search
+outputs:
+  home: [HTML, RSS, JSON]
+
+# Menu items
+menu:
+  main:
+    - name: Proposal
+      pageRef: /proposal
+      weight: 1
+    - name: Blog
+      pageRef: /blog
+      weight: 2
+    - name: Tags
+      pageRef: /tags
+      weight: 3
+
+params:
+  navbar:
+    displayTitle: true
+    displayLogo: false
+
+  footer:
+    displayCopyright: false
+    displayPoweredBy: false
+    displayThemeAttribution: false
+
+  editURL:
+    enable: false
+
+  search:
+    enable: true
+
+  theme:
+    # light | dark | system
+    default: system
+    displayToggle: true
+    # dark mode params
+    darkMode:
+      codeBlock: true
+      transparent: false
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true

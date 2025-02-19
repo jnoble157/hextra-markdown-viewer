@@ -1,0 +1,24 @@
+{{ define "main" }}
+  <div class="hx-mx-auto hx-flex {{ partial `utils/page-width` . }}">
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true "displayPlaceholder" true) }}
+    <article class="hx-w-full hx-break-words hx-flex hx-min-h-[calc(100vh-var(--navbar-height))] hx-min-w-0 hx-justify-center hx-pb-8 hx-pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main class="hx-w-full hx-min-w-0 hx-max-w-6xl hx-px-6 hx-pt-4 md:hx-px-12">
+        <div class="hx-mb-16">
+          <h1 class="hx-text-4xl hx-font-bold">Tags</h1>
+        </div>
+
+        <div class="hx-flex hx-flex-wrap hx-gap-4">
+          {{ range .Site.Taxonomies.tags }}
+            <a href="{{ .Page.RelPermalink }}" class="hx-group">
+              <div class="hx-px-4 hx-py-2 hx-rounded-lg hx-bg-gray-100 dark:hx-bg-neutral-800 hover:hx-bg-gray-200 dark:hover:hx-bg-neutral-700">
+                <span class="hx-text-lg hx-font-medium hx-text-gray-800 dark:hx-text-gray-200">{{ .Page.Title }}</span>
+                <span class="hx-text-sm hx-text-gray-500 hx-ml-2 hx-font-bold">{{ .Count }}</span>
+              </div>
+            </a>
+          {{ end }}
+        </div>
+      </main>
+    </article>
+    <div class="max-xl:hx-hidden hx-h-0 hx-w-64 hx-shrink-0"></div>
+  </div>
+{{ end }} 

@@ -1,0 +1,59 @@
+{{ define "main" }}
+  <div class="hx-mx-auto hx-flex {{ partial `utils/page-width` . }}">
+    {{ partial "sidebar.html" (dict "context" . "disableSidebar" true "displayPlaceholder" true) }}
+    <article class="hx-w-full hx-break-words hx-flex hx-min-h-[calc(100vh-var(--navbar-height))] hx-min-w-0 hx-justify-center hx-pb-8 hx-pr-[calc(env(safe-area-inset-right)-1.5rem)]">
+      <main class="hx-w-full hx-min-w-0 hx-max-w-6xl hx-px-6 hx-pt-4 md:hx-px-12">
+        <div class="hx-flex hx-items-center hx-gap-2 hx-mb-16">
+          <!-- <h1 class="hx-text-4xl hx-font-bold">Archive</h1> -->
+          <a href="/index.xml" class="hx-text-gray-400 hover:hx-text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="hx-h-6 hx-w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z" />
+            </svg>
+          </a>
+        </div>
+
+        {{- $pages := where .Site.RegularPages "Section" "blog" -}}
+        {{- $pages := $pages.ByDate.Reverse -}}
+        
+        {{- $pagesByYear := dict -}}
+        {{- range $pages -}}
+          {{- $year := .Date.Format "2006" -}}
+          {{- if not (isset $pagesByYear $year) -}}
+            {{- $pagesByYear = merge $pagesByYear (dict $year (slice .)) -}}
+          {{- else -}}
+            {{- $yearPages := index $pagesByYear $year -}}
+            {{- $pagesByYear = merge $pagesByYear (dict $year ($yearPages | append .)) -}}
+          {{- end -}}
+        {{- end -}}
+
+        {{- $years := slice -}}
+        {{- range $year, $_ := $pagesByYear -}}
+          {{- $years = $years | append $year -}}
+        {{- end -}}
+
+        {{- range sort $years "value" "desc" -}}
+          {{- $yearPages := index $pagesByYear . -}}
+          <div class="hx-mt-16 first:hx-mt-0">
+            <h2 class="hx-text-3xl hx-font-bold hx-mb-8">
+              {{ . }}
+            </h2>
+            
+            <div class="hx-space-y-16">
+              {{- range $yearPages -}}
+                <div class="hx-mb-8">
+                  <a href="{{ .RelPermalink }}" class="hover:hx-text-primary-600 dark:hover:hx-text-primary-500">
+                    <h4 class="hx-text-xl hx-mb-3">{{ .Title }}</h4>
+                  </a>
+                  <div class="hx-text-gray-500">
+                    {{ .Date.Format "January 02, 2006" }} · {{ .ReadingTime }} min read · {{ .Params.author }}
+                  </div>
+                </div>
+              {{- end -}}
+            </div>
+          </div>
+        {{- end -}}
+      </main>
+    </article>
+    <div class="max-xl:hx-hidden hx-h-0 hx-w-64 hx-shrink-0"></div>
+  </div>
+{{- end -}}
